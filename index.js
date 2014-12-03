@@ -7,18 +7,19 @@ function extend(obj1, obj2) {
     return obj1
 }
 
-// TODO: support stuff like:
-// 'input:number $email=foo@bar.net
 function parseTagSpec(specString) {
-    var parser = /^([a-z]+)((?:#|\.)[a-z]+)*$/
-    var matches = (specString || '').match(parser)
+    var tagName = specString.split(/[^a-z]/)[0]
+    var attrsRegex = /((?:#|\.)[\w-]+)/g
+    var spec = { tagName: tagName }
+    var classes = []
 
-    var spec = { tagName: matches[1] }
-    matches.slice(2).forEach(function(str) {
+    var matches = (specString || '').match(attrsRegex)
+    matches && matches.forEach(function(str) {
         if (!str) return
         if (str[0] === '#') spec.id = str.slice(1)
-        if (str[0] === '.') spec.className = str.slice(1)
+        if (str[0] === '.') classes.push(str.slice(1))
     })
+    if (classes.length) spec.className = classes.join(' ')
     return spec
 }
 

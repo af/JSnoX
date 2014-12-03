@@ -19,6 +19,13 @@ test('Works with ids', function(t) {
 
 test('Works with classes', function(t) {
     t.equal(render(d('div.test')), '<div class="test"></div>')
-    // TODO: more complex cases
+    t.equal(render(d('div.test-2')), '<div class="test-2"></div>')
+    t.equal(render(d('div.test_3')), '<div class="test_3"></div>')
+    t.equal(render(d('span.foo.bar.test-4')), '<span class="foo bar test-4"></span>')
+    t.end()
+})
+
+test('Works with combinations of properties', function(t) {
+    t.equal(render(d('div#foo.bar.baz')), '<div id="foo" class="bar baz"></div>')
     t.end()
 })
