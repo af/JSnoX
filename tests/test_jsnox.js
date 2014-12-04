@@ -25,7 +25,19 @@ test('Works with classes', function(t) {
     t.end()
 })
 
+test('Works with attributes (with or without a given value)', function(t) {
+    // Note: React warns about [checked] and [value] unless one of readOnly or
+    // onChange are also specified
+    t.equal(render(d('input[name=asdf]')), '<input name="asdf">')
+    t.equal(render(d('select[multiple]')), '<select multiple></select>')
+
+    t.equal(render(d('input[checked=1][readOnly=1]')), '<input checked readonly>')
+    t.equal(render(d('input[checked][readOnly]')), '<input checked readonly>')
+    t.end()
+})
+
 test('Works with combinations of properties', function(t) {
     t.equal(render(d('div#foo.bar.baz')), '<div id="foo" class="bar baz"></div>')
+    t.equal(render(d('input#foo.bar.baz[readOnly]')), '<input id="foo" readonly class="bar baz">')
     t.end()
 })
