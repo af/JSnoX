@@ -6,18 +6,18 @@ var render = function(domTree) {
     return React.renderToStaticMarkup(domTree)
 }
 
-test('Works with simple plain tagnames', function(t) {
+test('Parses simple plain tagnames', function(t) {
     t.equal(render(d('div')), '<div></div>')
     t.equal(render(d('input')), '<input>')
     t.end()
 })
 
-test('Works with ids', function(t) {
+test('Parses ids', function(t) {
     t.equal(render(d('div#test')), '<div id="test"></div>')
     t.end()
 })
 
-test('Works with classes', function(t) {
+test('Parses classes', function(t) {
     t.equal(render(d('div.test')), '<div class="test"></div>')
     t.equal(render(d('div.test-2')), '<div class="test-2"></div>')
     t.equal(render(d('div.test_3')), '<div class="test_3"></div>')
@@ -25,7 +25,7 @@ test('Works with classes', function(t) {
     t.end()
 })
 
-test('Works with attributes (with or without a given value)', function(t) {
+test('Parses attributes (with or without a given value)', function(t) {
     // Note: React warns about [checked] and [value] unless one of readOnly or
     // onChange are also specified
     t.equal(render(d('input[name=asdf]')), '<input name="asdf">')
@@ -36,8 +36,16 @@ test('Works with attributes (with or without a given value)', function(t) {
     t.end()
 })
 
-test('Works with combinations of properties', function(t) {
+test('Parses combinations of properties', function(t) {
     t.equal(render(d('div#foo.bar.baz')), '<div id="foo" class="bar baz"></div>')
     t.equal(render(d('input#foo.bar.baz[readOnly]')), '<input id="foo" readonly class="bar baz">')
+    t.end()
+})
+
+test('Combines parsed props and values from the props hash', function(t) {
+    t.equal(render(d('div.foo', { id: 'bar' })), '<div class="foo" id="bar"></div>')
+
+    // Classes should be combined from both sources:
+    t.equal(render(d('div.foo', { className: 'bar' })), '<div class="foo bar"></div>')
     t.end()
 })

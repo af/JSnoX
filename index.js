@@ -5,7 +5,8 @@ var attrRegex = /\[(\w+)(?:=(\w+))?\]/                  // matches '[foo=bar]' o
 
 
 // Convert a tag specification string into an object
-// eg. 'input#foo.bar[baz=asdf]' => { tagName: 'input', id: 'foo', className: 'bar', baz: 'asdf' }
+// eg. 'input#foo.bar[baz=asdf]' produces the output:
+// { tagName: 'input', id: 'foo', className: 'bar', baz: 'asdf' }
 function parseTagSpec(specString) {
     var tagName = specString.split(/[^a-z]/)[0]
     var spec = { tagName: tagName }
@@ -26,10 +27,17 @@ function parseTagSpec(specString) {
 }
 
 
-// Simple Object.assign-like utility:
+// Simple Object.assign-like utility (with special cases)
 function extend(obj1, obj2) {
     obj1 = obj1 || {}
     obj2 = obj2 || {}
+
+    // className is a special case: we want to return the combination
+    // of strings if both objects contain className
+    var combinedClass = obj1.className && obj2.className &&
+                        [obj1.className, obj2.className].join(' ')
+    if (combinedClass) obj2.className = combinedClass
+
     for (var k in obj2) obj1[k] = obj2[k]
     return obj1
 }
@@ -41,7 +49,7 @@ module.exports = function jsnox(React) {
             var spec = parseTagSpec(componentType)
             componentType = spec.tagName
             delete spec.tagName
-            props = extend(props, spec)
+            props = extend(spec, props)
         }
 
         return React.createElement(componentType, props, children)
