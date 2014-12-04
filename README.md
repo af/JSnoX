@@ -1,29 +1,36 @@
 # JSnoX
 
-Enjoy React.js, but not a fan of the jsx? JSnoX is an effort to create a concise,
-expressive way to build ReactElement trees.
+Enjoy React.js, but not a fan of the JSX? JSnoX gives you a concise,
+expressive way to build ReactElement trees in pure JavaScript. Works
+with React v0.12 and above.
+
 
 ## Example
 
 ```
 var React = require('react')
 var MyOtherComponent = require('./some/path.js')
-var d = require('jsnox')(React.DOM)
+var d = require('jsnox')(React)
 
 var LoginForm = React.createClass({
     submitLogin: function() { ... },
 
     render: function() {
-        return d('form[method=POST]', { onSubmit: this.submitLogin }
+        return d('form.login-form[method=POST]', { onSubmit: this.submitLogin },
             d('h1', 'Login'),
-            d('input[type=email]', { placeholder: 'Enter your email' }),
-            d('input[type=password]', { placeholder: 'Enter password' }),
+            d('input:email[name=email], { placeholder: 'Email' }),
+            d('input:password[name=pass]', { placeholder: 'Password' }),
             d(MyOtherComponent, { myProp: 'foo' }),
-            d('button.submit', 'Login')
+            d('button:submit', 'Login')
         )
     }
 })
 ```
+
+
+## Install
+
+```npm install jsnox```
 
 
 ## Why this instead of JSX?
@@ -41,6 +48,14 @@ var LoginForm = React.createClass({
   with `React.createFactory()` everywhere
 
 
-## Install
+## Notes/gotchas
 
-```npm install jsnox```
+* All attributes you specify should be the ones that React handles. So, for
+  example, you want to type `'input[readOnly]'` (camel-cased), instead of
+  `'readonly'` like you'd be used to with html.
+
+## See also
+
+[react-hyperscript](https://github.com/mlmorg/react-hyperscript) is a similar
+module that converts [hyperscript](https://github.com/dominictarr/hyperscript)
+to ReactElements.
