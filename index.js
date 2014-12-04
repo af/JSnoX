@@ -1,16 +1,21 @@
 'use strict';
 
-var propsRegex = /((?:#|\.)[\w-]+)|(\[\w+(?:=\w+)?\])/g
+var tagNameRegex = /^([a-z]+)(?:\:([a-z]+))?/           // matches 'input' or 'input:text'
+var propsRegex = /((?:#|\.)[\w-]+)|(\[\w+(?:=\w+)?\])/g // matches all further properties
 var attrRegex = /\[(\w+)(?:=(\w+))?\]/                  // matches '[foo=bar]' or '[foo]'
 
 
 // Convert a tag specification string into an object
-// eg. 'input#foo.bar[baz=asdf]' produces the output:
-// { tagName: 'input', id: 'foo', className: 'bar', baz: 'asdf' }
+// eg. 'input:checkbox#foo.bar[name=asdf]' produces the output:
+// { tagName: 'input', type: 'checkbox', id: 'foo', className: 'bar', name: 'asdf' }
 function parseTagSpec(specString) {
-    var tagName = specString.split(/[^a-z]/)[0]
-    var spec = { tagName: tagName }
+    // Parse tagName, and optional
+    var tagMatch = specString.match(tagNameRegex)
+    if (!tagMatch) return
+
+    var spec = { tagName: tagMatch[1] }
     var classes = []
+    if (tagMatch[2]) spec.type = tagMatch[2]
 
     var matches = (specString || '').match(propsRegex)
     matches && matches.forEach(function(str) {

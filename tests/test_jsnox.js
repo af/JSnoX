@@ -36,6 +36,17 @@ test('Parses attributes (with or without a given value)', function(t) {
     t.end()
 })
 
+test('Parses type attribute as a special case (using a colon)', function(t) {
+    t.equal(render(d('input:checkbox')), '<input type="checkbox">')
+    t.equal(render(d('button:submit')), '<button type="submit"></button>')
+
+    // Test combinations with other properties:
+    t.equal(render(d('input:checkbox.foo[name=baz]')),
+                     '<input type="checkbox" name="baz" class="foo">')
+    t.equal(render(d('button:submit.foo')), '<button type="submit" class="foo"></button>')
+    t.end()
+})
+
 test('Parses combinations of properties', function(t) {
     t.equal(render(d('div#foo.bar.baz')), '<div id="foo" class="bar baz"></div>')
     t.equal(render(d('input#foo.bar.baz[readOnly]')), '<input id="foo" readonly class="bar baz">')
