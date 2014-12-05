@@ -7,7 +7,7 @@ with React v0.12 and above.
 
 ## Example
 
-```
+```js
 var React = require('react')
 var MyOtherComponent = require('./some/path.js')
 var d = require('jsnox')(React)
@@ -18,7 +18,7 @@ var LoginForm = React.createClass({
     render: function() {
         return d('form.login-form[method=POST]', { onSubmit: this.submitLogin }, [
             d('h1', 'Login'),
-            d('input:email[name=email], { placeholder: 'Email' }),
+            d('input:email[name=email]', { placeholder: 'Email' }),
             d('input:password[name=pass]', { placeholder: 'Password' }),
             d(MyOtherComponent, { myProp: 'foo' }),
             d('button:submit', 'Login')
@@ -35,15 +35,18 @@ var LoginForm = React.createClass({
 
 ## Why this instead of JSX?
 
-* all your existing tooling (linter, minifier, editor, etc) still works
-* no weird XML dialect in the middle of your JavaScript
-* no forced build step
+* No weird XML dialect in the middle of your JavaScript
+* All your existing tooling (linter, minifier, editor, etc) works as it does
+  with regular JavaScript
+* No forced build step
 
 
-## Why this instead of plain JS with `React.DOM` 
+## Why this instead of plain JS with `React.DOM`?
 
-* more concise code
-* use your custom ReactComponent instances on React 0.12+ without [needing
+* More concise code
+* No need to specify a `key` property for siblings that are specified with
+  distinct strings
+* Use your custom ReactComponent instances on React 0.12+ without [needing
   to wrap them](https://gist.github.com/sebmarkbage/d7bce729f38730399d28)
   with `React.createFactory()` everywhere
 
@@ -53,6 +56,7 @@ var LoginForm = React.createClass({
 * All attributes you specify should be the ones that React handles. So, for
   example, you want to type `'input[readOnly]'` (camel-cased), instead of
   `'readonly'` like you'd be used to with html.
+
 
 ## See also
 
