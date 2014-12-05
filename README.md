@@ -16,13 +16,13 @@ var LoginForm = React.createClass({
     submitLogin: function() { ... },
 
     render: function() {
-        return d('form.login-form[method=POST]', { onSubmit: this.submitLogin },
+        return d('form.login-form[method=POST]', { onSubmit: this.submitLogin }, [
             d('h1', 'Login'),
             d('input:email[name=email], { placeholder: 'Email' }),
             d('input:password[name=pass]', { placeholder: 'Password' }),
             d(MyOtherComponent, { myProp: 'foo' }),
             d('button:submit', 'Login')
-        )
+        ])
     }
 })
 ```

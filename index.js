@@ -13,7 +13,9 @@ function parseTagSpec(specString) {
     var tagMatch = specString.match(tagNameRegex)
     if (!tagMatch) return
 
-    var spec = { tagName: tagMatch[1] }
+    // Provide the specString as a default key, which can always be overridden
+    // by the props hash (for when two siblings have the same specString)
+    var spec = { tagName: tagMatch[1], key: specString }
     var classes = []
     if (tagMatch[2]) spec.type = tagMatch[2]
 

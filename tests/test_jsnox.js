@@ -60,3 +60,15 @@ test('Combines parsed props and values from the props hash', function(t) {
     t.equal(render(d('div.foo', { className: 'bar' })), '<div class="foo bar"></div>')
     t.end()
 })
+
+test('trees of elements render correctly', function(t) {
+    var tree1 = d('form.foo', {}, [
+                  d('input:email'),
+                  d('input:password'),
+                  d('button:submit', {}, 'Submit')
+                ])
+    t.equal(render(tree1), '<form class="foo"><input type="email">' +
+                           '<input type="password"><button type="submit">Submit</button>' +
+                           '</form>')
+    t.end()
+});
