@@ -52,6 +52,12 @@ function extend(obj1, obj2) {
 
 module.exports = function jsnox(React) {
     return function(componentType, props, children) {
+        // Handle case where props arg is not specified (it's optional)
+        if (Array.isArray(props) || typeof props === 'string') {
+            children = props
+            props = null
+        }
+
         if (typeof componentType === 'string') {
             var spec = parseTagSpec(componentType)
             componentType = spec.tagName

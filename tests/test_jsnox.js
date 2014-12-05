@@ -61,6 +61,12 @@ test('Combines parsed props and values from the props hash', function(t) {
     t.end()
 })
 
+test('Props hash argument is optional', function(t) {
+    t.equal(render(d('div.foo', 'Shazam')), '<div class="foo">Shazam</div>')
+    t.equal(render(d('div', [d('span', 'hi')])), '<div><span>hi</span></div>')
+    t.end()
+});
+
 test('trees of elements render correctly', function(t) {
     var tree1 = d('form.foo', {}, [
                   d('input:email'),
