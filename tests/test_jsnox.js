@@ -67,6 +67,12 @@ test('Props hash argument is optional', function(t) {
     t.end()
 });
 
+test('button elements have default type="button"', function(t) {
+    t.equal(render(d('button', 'hi')), '<button type="button">hi</button>')
+    t.equal(render(d('button.foo.bar', 'hi')), '<button type="button" class="foo bar">hi</button>')
+    t.end()
+});
+
 test('trees of elements render correctly', function(t) {
     var tree1 = d('form.foo', {}, [
                   d('input:email'),

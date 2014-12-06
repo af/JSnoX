@@ -18,6 +18,7 @@ function parseTagSpec(specString) {
     var spec = { tagName: tagMatch[1], key: specString }
     var classes = []
     if (tagMatch[2]) spec.type = tagMatch[2]
+    else if (spec.tagName === 'button') spec.type = 'button' // Saner default for <button>
 
     var matches = (specString || '').match(propsRegex)
     matches && matches.forEach(function(str) {
@@ -32,7 +33,6 @@ function parseTagSpec(specString) {
     if (classes.length) spec.className = classes.join(' ')
     return spec
 }
-
 
 // Simple Object.assign-like utility (with special cases)
 function extend(obj1, obj2) {

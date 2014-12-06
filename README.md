@@ -56,6 +56,9 @@ var LoginForm = React.createClass({
 * All attributes you specify should be the ones that React handles. So, for
   example, you want to type `'input[readOnly]'` (camel-cased), instead of
   `'readonly'` like you'd be used to with html.
+* JSnoX gives you a saner default `type` for `button` elements– unless you specify
+  `'button:submit'` their type will be `"button"` (unintentionally form-submitting
+  buttons is a personal pet peeve).
 
 
 ## See also
