@@ -63,6 +63,8 @@ var LoginForm = React.createClass({
 
 ## See also
 
-[react-hyperscript](https://github.com/mlmorg/react-hyperscript) is a similar
+* [react-hyperscript](https://github.com/mlmorg/react-hyperscript) is a similar
 module that converts [hyperscript](https://github.com/dominictarr/hyperscript)
 to ReactElements.
+* [react-no-jsx](https://github.com/jussi-kalliokoski/react-no-jsx) provides
+  another way to write plain JS instead of JSX.
