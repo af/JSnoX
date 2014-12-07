@@ -1,8 +1,8 @@
 'use strict';
 
 var tagNameRegex = /^([a-z]+)(?:\:([a-z]+))?/           // matches 'input' or 'input:text'
-var propsRegex = /((?:#|\.)[\w-]+)|(\[\w+(?:=\w+)?\])/g // matches all further properties
-var attrRegex = /\[(\w+)(?:=(\w+))?\]/                  // matches '[foo=bar]' or '[foo]'
+var propsRegex = /((?:#|\.)[\w-]+)|(\[\w+(?:=[^\]=]+)?\])/g // matches all further properties
+var attrRegex = /\[(\w+)(?:=([^\]=]+))?\]/              // matches '[foo=bar]' or '[foo]'
 
 
 // Convert a tag specification string into an object

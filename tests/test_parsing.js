@@ -31,6 +31,9 @@ test('Parses attributes (with or without a given value)', function(t) {
     t.equal(render(d('input[name=asdf]')), '<input name="asdf">')
     t.equal(render(d('select[multiple]')), '<select multiple></select>')
 
+    // Some attribute types allow values that include spaces:
+    t.equal(render(d('input[placeholder=s p a c e]')), '<input placeholder="s p a c e">')
+
     t.equal(render(d('input[checked=1][readOnly=1]')), '<input checked readonly>')
     t.equal(render(d('input[checked][readOnly]')), '<input checked readonly>')
     t.end()
