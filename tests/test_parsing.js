@@ -73,14 +73,3 @@ test('button elements have default type="button"', function(t) {
     t.end()
 });
 
-test('trees of elements render correctly', function(t) {
-    var tree1 = d('form.foo', {}, [
-                  d('input:email'),
-                  d('input:password'),
-                  d('button:submit', {}, 'Submit')
-                ])
-    t.equal(render(tree1), '<form class="foo"><input type="email">' +
-                           '<input type="password"><button type="submit">Submit</button>' +
-                           '</form>')
-    t.end()
-});

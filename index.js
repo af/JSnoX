@@ -59,10 +59,20 @@ module.exports = function jsnox(React) {
         }
 
         if (typeof componentType === 'string') {
+            // Parse the provided string into a hash of props
             var spec = parseTagSpec(componentType)
             componentType = spec.tagName
             delete spec.tagName
             props = extend(spec, props)
+        } else {
+            // For custom componenents, attempt to provide a default "key" prop.
+            // This can prevent the "Each child in an array should have a
+            // unique key prop" warning when the element doesn't have any
+            // siblings of the same type. Provide a displayName for your custom
+            // components to make this more useful (and help with debugging).
+            var fakeKey = componentType.displayName || 'customElement'
+            props = props || {}
+            if (!props.key) props.key = fakeKey
         }
 
         return React.createElement(componentType, props, children)
