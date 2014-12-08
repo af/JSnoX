@@ -1,3 +1,4 @@
+(function(global) {       // IIFE for legacy non-module usage
 'use strict';
 
 var tagNameRegex = /^([a-z]+)(?:\:([a-z]+))?/           // matches 'input' or 'input:text'
@@ -49,8 +50,7 @@ function extend(obj1, obj2) {
     return obj1
 }
 
-
-module.exports = function jsnox(React) {
+function jsnox(React) {
     return function(componentType, props, children) {
         // Handle case where props arg is not specified (it's optional)
         if (Array.isArray(props) || typeof props === 'string') {
@@ -78,3 +78,9 @@ module.exports = function jsnox(React) {
         return React.createElement(componentType, props, children)
     }
 }
+
+// Export for CommonJS, or else add a global jsnox variable:
+if (typeof(module) !== 'undefined') module.exports = jsnox
+else global.jsnox = jsnox
+
+}(this))
