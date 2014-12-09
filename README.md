@@ -28,9 +28,39 @@ var LoginForm = React.createClass({
 ```
 
 
+## API
+
+```javascript
+var React = require('react')
+var d = require('jsnox')(React)     // Get a function to parse spec strings into React DOM
+
+// The function returned by JSnoX takes 3 arguments:
+// specString (required)    - Specifies the tagName and (optionally) attributes
+// props (optional)         - Additional props (can override output from specString)
+// children (optional)      - String, or an array of ReactElements
+var myDom = d('div.foo', {}, 'hello')
+
+console.log(React.renderToStaticMarkup(myDom))  // => '<div class="foo">hello</div>'
+```
+
+JSnoX's specStrings let you specify your components' HTML in a way resembling
+CSS selectors:
+
+![spec strings](docs/jsnox-specstring.png)
+
+Each property referenced in the string is passed along in the props argument to
+`React.createElement()`. You can pass along additional props in the second argument.
+
+
 ## Install
 
-```npm install jsnox```
+```
+npm install jsnox
+```
+
+Npm is the recommended way to install. You can also include `index.js` in your
+project directly and it will fall back to exporting a global variable as
+`window.jsnox`.
 
 
 ## Why this instead of JSX?
