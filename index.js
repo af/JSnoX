@@ -6,13 +6,24 @@ var propsRegex = /((?:#|\.)[\w-]+)|(\[\w+(?:=[^\]=]+)?\])/g // matches all furth
 var attrRegex = /\[(\w+)(?:=([^\]=]+))?\]/              // matches '[foo=bar]' or '[foo]'
 
 
+// Error subclass to throw for parsing errors
+function ParseError(input) {
+    this.message = input
+    this.stack = new Error().stack
+}
+ParseError.prototype = Object.create(Error.prototype)
+ParseError.prototype.name = 'JSnoXParseError'
+
+
 // Convert a tag specification string into an object
 // eg. 'input:checkbox#foo.bar[name=asdf]' produces the output:
 // { tagName: 'input', type: 'checkbox', id: 'foo', className: 'bar', name: 'asdf' }
 function parseTagSpec(specString) {
-    // Parse tagName, and optional
+    if (!specString.match) throw new ParseError(specString) // We didnt' receive a string
+
+    // Parse tagName, and optional type attribute
     var tagMatch = specString.match(tagNameRegex)
-    if (!tagMatch) return
+    if (!tagMatch) throw new ParseError(specString)
 
     // Provide the specString as a default key, which can always be overridden
     // by the props hash (for when two siblings have the same specString)
@@ -51,20 +62,14 @@ function extend(obj1, obj2) {
 }
 
 function jsnox(React) {
-    return function(componentType, props, children) {
+    var client = function(componentType, props, children) {
         // Handle case where props arg is not specified (it's optional)
         if (Array.isArray(props) || typeof props === 'string') {
             children = props
             props = null
         }
 
-        if (typeof componentType === 'string') {
-            // Parse the provided string into a hash of props
-            var spec = parseTagSpec(componentType)
-            componentType = spec.tagName
-            delete spec.tagName
-            props = extend(spec, props)
-        } else {
+        if (typeof componentType === 'function') {
             // For custom componenents, attempt to provide a default "key" prop.
             // This can prevent the "Each child in an array should have a
             // unique key prop" warning when the element doesn't have any
@@ -73,10 +78,18 @@ function jsnox(React) {
             var fakeKey = componentType.displayName || 'customElement'
             props = props || {}
             if (!props.key) props.key = fakeKey
+        } else {
+            // Parse the provided string into a hash of props
+            var spec = parseTagSpec(componentType || '')
+            componentType = spec.tagName
+            delete spec.tagName
+            props = extend(spec, props)
         }
 
         return React.createElement(componentType, props, children)
     }
+    client.ParseError = ParseError
+    return client
 }
 
 // Export for CommonJS, or else add a global jsnox variable:

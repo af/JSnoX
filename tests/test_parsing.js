@@ -76,3 +76,13 @@ test('button elements have default type="button"', function(t) {
     t.end()
 });
 
+test('invalid input throws ParseError exceptions', function(t) {
+    var errRegex = new RegExp(d.ParseError.prototype.name)
+    t.throws(function() { d('-invalid') }, errRegex)
+    t.throws(function() { d('') }, errRegex)
+    t.throws(function() { d() }, errRegex)
+    t.throws(function() { d(null) }, errRegex)
+    t.throws(function() { d(false) }, errRegex)
+    t.throws(function() { d(14) }, errRegex)
+    t.end()
+});
