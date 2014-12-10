@@ -17,7 +17,15 @@ ParseError.prototype.name = 'JSnoXParseError'
 
 // Convert a tag specification string into an object
 // eg. 'input:checkbox#foo.bar[name=asdf]' produces the output:
-// { tagName: 'input', type: 'checkbox', id: 'foo', className: 'bar', name: 'asdf' }
+// {
+//   tagName: 'input',
+//   props: {
+//     type: 'checkbox',
+//     id: 'foo',
+//     className: 'bar',
+//     name: 'asdf'
+//   }
+// }
 function parseTagSpec(specString) {
     if (!specString.match) throw new ParseError(specString) // We didnt' receive a string
 
@@ -27,38 +35,46 @@ function parseTagSpec(specString) {
 
     // Provide the specString as a default key, which can always be overridden
     // by the props hash (for when two siblings have the same specString)
-    var spec = { tagName: tagMatch[1], key: specString }
+    var tagName = tagMatch[1]
+    var props = { key: specString }
     var classes = []
-    if (tagMatch[2]) spec.type = tagMatch[2]
-    else if (spec.tagName === 'button') spec.type = 'button' // Saner default for <button>
+    if (tagMatch[2]) props.type = tagMatch[2]
+    else if (tagName === 'button') props.type = 'button' // Saner default for <button>
 
     var matches = (specString || '').match(propsRegex)
     matches && matches.forEach(function(str) {
         if (!str) return
-        else if (str[0] === '#') spec.id = str.slice(1)
+        else if (str[0] === '#') props.id = str.slice(1)
         else if (str[0] === '.') classes.push(str.slice(1))
         else if (str[0] === '[') {
             var match = str.match(attrRegex)
-            if (match) spec[match[1]] = match[2] || true    // If no attr value given, use true
+            if (match) props[match[1]] = match[2] || true    // If no attr value given, use true
         }
     })
-    if (classes.length) spec.className = classes.join(' ')
-    return spec
+    if (classes.length) props.className = classes.join(' ')
+    return {
+        tagName: tagName,
+        props: props
+    }
 }
 
-// Simple Object.assign-like utility (with special cases)
+// Merge two objects, producing a new object with their properties
+// (the className property is treated as a special cases)
 function extend(obj1, obj2) {
+    var output = {}
     obj1 = obj1 || {}
     obj2 = obj2 || {}
+
+    for (var k in obj1) output[k] = obj1[k]
+    for (var l in obj2) output[l] = obj2[l]
 
     // className is a special case: we want to return the combination
     // of strings if both objects contain className
     var combinedClass = obj1.className && obj2.className &&
                         [obj1.className, obj2.className].join(' ')
-    if (combinedClass) obj2.className = combinedClass
+    if (combinedClass) output.className = combinedClass
 
-    for (var k in obj2) obj1[k] = obj2[k]
-    return obj1
+    return output
 }
 
 function jsnox(React) {
@@ -82,8 +98,7 @@ function jsnox(React) {
             // Parse the provided string into a hash of props
             var spec = parseTagSpec(componentType || '')
             componentType = spec.tagName
-            delete spec.tagName
-            props = extend(spec, props)
+            props = extend(spec.props, props)
         }
 
         return React.createElement(componentType, props, children)
