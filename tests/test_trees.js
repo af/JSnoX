@@ -43,3 +43,18 @@ test('rendering custom components works correctly without props', function(t) {
     t.equal(render(tree), '<section id="stuff"><div>hi</div><span>!</span></section>')
     t.end()
 });
+
+test('Readme example', function(t) {
+    var noop = function() {}
+    var tree = d('form[method=POST]', { onSubmit: noop }, [
+        d('h1.form-header', 'Login'),
+        d('input:email[name=email]', { placeholder: 'Email' }),
+        d('input:password[name=pass]', { placeholder: 'Password' }),
+        d(Greeting, { text: 'yo' }),
+        d('button:submit', 'Login')
+    ])
+
+    var expected = '<form method="POST"><h1 class="form-header">Login</h1><input type="email" name="email" placeholder="Email"><input type="password" name="pass" placeholder="Password"><div>yo</div><button type="submit">Login</button></form>';
+    t.equal(render(tree), expected)
+    t.end()
+});

@@ -1,7 +1,7 @@
 (function(global) {       // IIFE for legacy non-module usage
 'use strict';
 
-var tagNameRegex = /^([a-z]+)(?:\:([a-z]+))?/           // matches 'input' or 'input:text'
+var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/           // matches 'input' or 'input:text'
 var propsRegex = /((?:#|\.)[\w-]+)|(\[\w+(?:=[^\]=]+)?\])/g // matches all further properties
 var attrRegex = /\[(\w+)(?:=([^\]=]+))?\]/              // matches '[foo=bar]' or '[foo]'
 
