@@ -31,8 +31,9 @@ var LoginForm = React.createClass({
 ## API
 
 ```javascript
+// Create a function, d, that parses spec strings into React DOM:
 var React = require('react')
-var d = require('jsnox')(React)     // Get a function to parse spec strings into React DOM
+var d = require('jsnox')(React)
 
 // The function returned by JSnoX takes 3 arguments:
 // specString (required)    - Specifies the tagName and (optionally) attributes
