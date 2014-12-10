@@ -15,6 +15,8 @@ ParseError.prototype = Object.create(Error.prototype)
 ParseError.prototype.name = 'JSnoXParseError'
 
 
+var specCache = {};
+
 // Convert a tag specification string into an object
 // eg. 'input:checkbox#foo.bar[name=asdf]' produces the output:
 // {
@@ -28,6 +30,8 @@ ParseError.prototype.name = 'JSnoXParseError'
 // }
 function parseTagSpec(specString) {
     if (!specString.match) throw new ParseError(specString) // We didnt' receive a string
+
+    if (specCache[specString]) return specCache[specString];
 
     // Parse tagName, and optional type attribute
     var tagMatch = specString.match(tagNameRegex)
@@ -52,10 +56,15 @@ function parseTagSpec(specString) {
         }
     })
     if (classes.length) props.className = classes.join(' ')
-    return {
+
+    var spec = {
         tagName: tagName,
         props: props
-    }
+    };
+
+    specCache[specString] = spec
+
+    return spec
 }
 
 // Merge two objects, producing a new object with their properties
