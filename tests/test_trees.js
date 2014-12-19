@@ -26,12 +26,22 @@ test('trees of elements render correctly', function(t) {
     t.end()
 });
 
-test('rendering custom components works correctly', function(t) {
+test('rendering custom components and text nodes', function(t) {
     var tree = d('section#stuff', [
+                'a greeting:',
                 d(Greeting, { text: 'yo'}),
                 d('span', '!')
                ])
-    t.equal(render(tree), '<section id="stuff"><div>yo</div><span>!</span></section>')
+    t.equal(render(tree), '<section id="stuff">a greeting:<div>yo</div><span>!</span></section>')
+    t.end()
+});
+
+test('rendering custom components works correctly without props', function(t) {
+    var tree = d('section#stuff', [
+                d(Greeting),
+                d('span', '!')
+               ])
+    t.equal(render(tree), '<section id="stuff"><div>hi</div><span>!</span></section>')
     t.end()
 });
 
