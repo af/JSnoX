@@ -15,6 +15,9 @@ ParseError.prototype = Object.create(Error.prototype)
 ParseError.prototype.name = 'JSnoXParseError'
 
 
+// A simple module-level cache for parseTagSpec().
+// Subsequent re-parsing of the same input string will be pulled
+// from this cache for an increase in performance.
 var specCache = {};
 
 // Convert a tag specification string into an object
@@ -30,7 +33,6 @@ var specCache = {};
 // }
 function parseTagSpec(specString) {
     if (!specString.match) throw new ParseError(specString) // We didnt' receive a string
-
     if (specCache[specString]) return specCache[specString];
 
     // Parse tagName, and optional type attribute
@@ -63,7 +65,6 @@ function parseTagSpec(specString) {
     };
 
     specCache[specString] = spec
-
     return spec
 }
 
@@ -86,6 +87,9 @@ function extend(obj1, obj2) {
     return output
 }
 
+// Main exported function.
+// Returns a "client", which is a function that can be used to compose
+// ReactElement trees directly.
 function jsnox(React) {
     var client = function(componentType, props, children) {
         // Handle case where props arg is not specified (it's optional)
