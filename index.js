@@ -1,5 +1,5 @@
-(function(global) {       // IIFE for legacy non-module usage
-'use strict';
+;(function(global) {       // IIFE for legacy non-module usage
+'use strict'
 
 var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/           // matches 'input' or 'input:text'
 var propsRegex = /((?:#|\.)[\w-]+)|(\[\w+(?:=[^\]=]+)?\])/g // matches all further properties
@@ -18,7 +18,7 @@ ParseError.prototype.name = 'JSnoXParseError'
 // A simple module-level cache for parseTagSpec().
 // Subsequent re-parsing of the same input string will be pulled
 // from this cache for an increase in performance.
-var specCache = {};
+var specCache = {}
 
 // Convert a tag specification string into an object
 // eg. 'input:checkbox#foo.bar[name=asdf]' produces the output:
@@ -32,8 +32,8 @@ var specCache = {};
 //   }
 // }
 function parseTagSpec(specString) {
-    if (!specString.match) throw new ParseError(specString) // We didnt' receive a string
-    if (specCache[specString]) return specCache[specString];
+    if (!specString || !specString.match) throw new ParseError(specString)
+    if (specCache[specString]) return specCache[specString]
 
     // Parse tagName, and optional type attribute
     var tagMatch = specString.match(tagNameRegex)
@@ -47,7 +47,7 @@ function parseTagSpec(specString) {
     if (tagMatch[2]) props.type = tagMatch[2]
     else if (tagName === 'button') props.type = 'button' // Saner default for <button>
 
-    var matches = (specString || '').match(propsRegex)
+    var matches = specString.match(propsRegex)
     matches && matches.forEach(function(str) {
         if (!str) return
         else if (str[0] === '#') props.id = str.slice(1)
@@ -62,14 +62,18 @@ function parseTagSpec(specString) {
     var spec = {
         tagName: tagName,
         props: props
-    };
+    }
 
     specCache[specString] = spec
     return spec
 }
 
 // Merge two objects, producing a new object with their properties
-// (the className property is treated as a special cases)
+//
+// Note:
+// * the className property is treated as a special case and is merged
+// * arguments are assumed to be object literals, which is why there are
+//   no hasOwnProperty() checks (see af/JSnoX/issues/3)
 function extend(obj1, obj2) {
     var output = {}
     obj1 = obj1 || {}
@@ -109,7 +113,9 @@ function jsnox(React) {
             if (!props.key) props.key = fakeKey
         } else {
             // Parse the provided string into a hash of props
-            var spec = parseTagSpec(componentType || '')
+            // If componentType is invalid (undefined, empty string, etc),
+            // parseTagSpec should throw.
+            var spec = parseTagSpec(componentType)
             componentType = spec.tagName
             props = extend(spec.props, props)
         }
