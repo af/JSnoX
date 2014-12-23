@@ -86,7 +86,20 @@ project directly and it will fall back to exporting a global variable as
 
 ## Notes/gotchas
 
-* All attributes you specify should be the ones that React handles. So, for
+* Your top-level component should also be wrapped by the jsnox client, to
+  prevent [warnings about `createFactory`](https://gist.github.com/sebmarkbage/ae327f2eda03bf165261). For example:
+
+  ```js
+  var d = require('jsnox')(React)
+
+  // Good:
+  React.render(d(MyTopLevelComponent, { prop1: 'foo'}), document.body)
+
+  // Bad (will trigger a warning, and break in future React versions):
+  React.render(MyTopLevelComponent({ prop1: 'foo'}), document.body)
+  ```
+
+* All attributes you specify should be the ones that React understands. So, for
   example, you want to type `'input[readOnly]'` (camel-cased), instead of
   `'readonly'` like you'd be used to with html.
 * JSnoX gives you a saner default `type` for `button` elements– unless you specify
