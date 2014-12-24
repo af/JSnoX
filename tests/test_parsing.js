@@ -50,6 +50,12 @@ test('Parses type attribute as a special case (using a colon)', function(t) {
     t.end()
 })
 
+test('Attributes with hyphens are passed through', function(t) {
+    var expected = '<div data-bar="asdf" class="foo">hi</div>'
+    t.equal(render(d('div.foo[data-bar=asdf]', 'hi')), expected)
+    t.end()
+});
+
 test('Parses combinations of properties', function(t) {
     t.equal(render(d('div#foo.bar.baz')), '<div id="foo" class="bar baz"></div>')
     t.equal(render(d('input#foo.bar.baz[readOnly]')), '<input id="foo" readonly class="bar baz">')
