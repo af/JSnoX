@@ -2,7 +2,7 @@
 'use strict'
 
 var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/               // matches 'input' or 'input:text'
-var propsRegex = /((?:#|\.)[\w-]+)|(\[[\w-]+(?:=[^\]=]+)?\])/g // matches all further properties
+var propsRegex = /((?:#|\.|@)[\w-]+)|(\[[\w-]+(?:=[^\]=]+)?\])/g // matches all further properties
 var attrRegex = /\[([\w-]+)(?:=([^\]=]+))?\]/                  // matches '[foo=bar]' or '[foo]'
 
 
@@ -51,6 +51,7 @@ function parseTagSpec(specString) {
     matches && matches.forEach(function(str) {
         if (!str) return
         else if (str[0] === '#') props.id = str.slice(1)
+        else if (str[0] === '@') props.ref = str.slice(1)
         else if (str[0] === '.') classes.push(str.slice(1))
         else if (str[0] === '[') {
             var match = str.match(attrRegex)

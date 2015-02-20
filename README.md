@@ -51,6 +51,18 @@ CSS selectors:
 
 ![spec strings](docs/jsnox-specstring.png)
 
+Also, you can add '@foo' to a specString to point
+a [ref](http://facebook.github.io/react/docs/more-about-refs.html) named foo
+to that element:
+
+```
+  // in render():
+  return d('input:email@emailAddr')
+
+  // elsewhere in the component (after rendering):
+  var emailEl = this.refs.emailAddr.getDOMNode()
+```
+
 Each property referenced in the string is passed along in the props argument to
 `React.createElement()`. You can pass along additional props in the second argument.
 
