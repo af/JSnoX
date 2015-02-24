@@ -85,7 +85,8 @@ function extend(obj1, obj2) {
 
     // className is a special case: we want to return the combination
     // of strings if both objects contain className
-    var combinedClass = obj1.className && obj2.className &&
+    var combinedClass = (typeof obj1.className === 'string') &&
+                        (typeof obj2.className === 'string') &&
                         [obj1.className, obj2.className].join(' ')
     if (combinedClass) output.className = combinedClass
 
