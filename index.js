@@ -98,6 +98,13 @@ function extend(obj1, obj2) {
 // ReactElement trees directly.
 function jsnox(React) {
     var client = function(componentType, props, children) {
+        // Throw an error if too many arguments were passed in
+        // (this can happen if you forget to wrap children in an array literal):
+        if (arguments.length > 3) {
+            var args = [].slice.call(arguments)
+            throw new ParseError('Too many jsnox args (expected 3 max). Got: ' + args)
+        }
+
         // Handle case where props arg is not specified (it's optional)
         if (Array.isArray(props) || typeof props === 'string') {
             children = props
