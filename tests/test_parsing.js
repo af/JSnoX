@@ -67,6 +67,12 @@ test('Combines parsed props and values from the props hash', function(t) {
 
     // Classes should be combined from both sources:
     t.equal(render(d('div.foo', { className: 'bar' })), '<div class="foo bar"></div>')
+    t.equal(render(d('div', { className: 'foo' })), '<div class="foo"></div>')
+    t.equal(render(d('div.foo', {})), '<div class="foo"></div>')
+
+    // Edge cases for class combinations:
+    t.equal(render(d('div.foo', { className: '' })), '<div class="foo "></div>')
+    t.equal(render(d('div.foo', { className: null })), '<div class="foo"></div>')
     t.end()
 })
 
