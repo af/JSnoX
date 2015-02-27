@@ -88,6 +88,17 @@ test('button elements have default type="button"', function(t) {
     t.end()
 });
 
+test('Data attributes get passed through as expected', function(t) {
+    t.equal(render(d('div', {'data-foo': 'bar'}, 'hi')), '<div data-foo="bar">hi</div>')
+
+    var dataHash = {'data-foo': 'bar', 'data-baz': 'boo'}
+    t.equal(render(d('div', dataHash, 'hi')), '<div data-foo="bar" data-baz="boo">hi</div>')
+
+    t.equal(render(d('div[data-foo=bar]', 'hi')), '<div data-foo="bar">hi</div>')
+    t.equal(render(d('div[data-a=1][data-b=2]', 'hi')), '<div data-a="1" data-b="2">hi</div>')
+    t.end()
+});
+
 test('invalid input throws ParseError exceptions', function(t) {
     var errRegex = new RegExp(d.ParseError.prototype.name)
     t.throws(function() { d('-invalid') }, errRegex)
