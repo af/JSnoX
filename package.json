@@ -2,7 +2,7 @@
   "name": "jsnox",
   "version": "0.9.2",
   "description": "Write concise React components without JSX",
-  "main": "index.js",
+  "main": "jsnox.js",
   "scripts": {
     "test": "./node_modules/tape/bin/tape tests/*.js"
   },
