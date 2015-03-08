@@ -31,6 +31,15 @@ test('Parses attributes (with or without a given value)', function(t) {
     t.equal(render(d('input[name=asdf]')), '<input name="asdf">')
     t.equal(render(d('select[multiple]')), '<select multiple></select>')
 
+    // Can include various url characters as attribute values
+    t.equal(render(d('a[href=google.com?foo=bar]')), '<a href="google.com?foo=bar"></a>')
+
+    // More involved test case from issue #6
+    // Note that renderToStaticMarkup() will encode '&' characters
+    var testUrl = 'https://maps.googleapis.com/maps/api/staticmap?center=San+Francisco,CA&zoom=10&size=400x400'
+    var encodedUrl = testUrl.replace(/&/g, '&amp;')
+    t.equal(render(d('a[href=' + testUrl + ']')), '<a href="' + encodedUrl + '"></a>')
+
     // Some attribute types allow values that include spaces:
     t.equal(render(d('input[placeholder=s p a c e]')), '<input placeholder="s p a c e">')
 
