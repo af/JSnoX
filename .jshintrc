@@ -1,0 +1,52 @@
+{
+    // JSHint config
+    // See http://www.jshint.com/options/ for full config documentation
+
+    "browser"       : true,   // Standard browser globals e.g. `window`, `document`.
+    "node"          : true,   // For testing if "module" exists
+    "debug"         : false,  // Allow debugger statements
+    "devel"         : false,   // Allow development statements (eg. console.log)
+
+    // EcmaScript 5.
+    "strict"        : false,  // Require `use strict` pragma in every file.
+    "globalstrict"  : false,  // Allow global "use strict" (enables "strict").
+
+    // Enforcing Options
+    // These options tell JSHint to be more strict towards your code.
+    "bitwise"       : true,   // Prohibit bitwise operators (&, |, ^, etc.).
+    "curly"         : false,  // Requires {} for every new block or scope.
+    "eqeqeq"        : true,   // Requires triple equals i.e. `===`.
+    "forin"         : false,  // Requires `for in` loops to be filtered with
+                              // `hasOwnPrototype`.
+    "immed"         : true,   // Requires IIFEs to be wrapped in parens
+                              // eg. `( function(){}() );`
+    "latedef"       : false,  // Prohibits variable use before definition.
+    "newcap"        : false,  // Requires capitalization of all constructors
+    "noarg"         : true,   // Prohibits use of `arguments.caller` and `callee`.
+    "noempty"       : true,   // Prohibits use of empty blocks.
+    "nonew"         : false,  // Prohibits use of constructors for side-effects.
+    "plusplus"      : false,  // Prohibits use of `++` & `--`.
+    "regexp"        : true,   // Prohibits `.` and `[^...]` in regular expressions.
+    "trailing"      : true,   // Prohibits trailing whitespaces.
+    "undef"         : true,   // Requires all non-globals be declared before use.
+    "unused"        : "vars", // Warns when you define unused vars (but not fn args)
+
+    // Relaxing Options
+    // These options allow you to suppress certain types of warnings.
+    "asi"           : true,   // Allows statements without semicolons
+    "boss"          : false,  // Tolerates assignments inside if, for & while.
+    "eqnull"        : true,   // Tolerates use of `== null`.
+    "evil"          : false,  // Tolerates use of `eval`.
+    "expr"          : true,   // Tolerates `ExpressionStatement` as Programs.
+    "laxbreak"      : false,  // Tolerates unsafe line breaks
+                              // eg. `return [\n] x` without semicolons.
+    "loopfunc"      : false,  // Allows functions to be defined within loops.
+    "regexdash"     : false,  // Tolerates unescaped last dash i.e. `[-...]`.
+    "scripturl"     : true,   // Tolerates script-targeted URLs.
+    "shadow"        : false,  // Allows re-defined variables later in code
+                              // eg. `var x=1; x=2;`.
+    "sub"           : true,   // Tolerates use of subscript notation
+                              // (eg. obj['key'] instead of obj.key).
+    "supernew"      : true,   // Tolerate `new function()` and `new Object;`.
+    "lastsemic"     : true    // Tolerate missing ; for final statements in blocks
+}
