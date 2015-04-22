@@ -4,6 +4,7 @@
   "description": "Write concise React components without JSX",
   "main": "jsnox.js",
   "scripts": {
+    "jshint": "jshint jsnox.js tests",
     "test": "./node_modules/tape/bin/tape tests/*.js"
   },
   "repository": {
@@ -22,7 +23,14 @@
   },
   "homepage": "https://github.com/af/jsnox",
   "devDependencies": {
-    "tape": "^3.0.3",
-    "react": "0.12.1"
+    "ghooks": "^0.3.0",
+    "jshint": "2.7.0",
+    "react": "0.12.1",
+    "tape": "^3.0.3"
+  },
+  "config": {
+    "ghooks": {
+      "pre-push": "npm test && npm run jshint"
+    }
   }
 }
