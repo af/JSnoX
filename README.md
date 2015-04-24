@@ -3,8 +3,12 @@
 # JSnoX
 
 Enjoy [React.js](http://facebook.github.io/react/), but not a fan of the JSX? JSnoX gives you a concise,
-expressive way to build ReactElement trees in pure JavaScript. Works
-with React v0.12 and above.
+expressive way to build ReactElement trees in pure JavaScript. 
+
+
+## Works with
+* React.js v0.12 and above
+* React Native
 
 
 ## Example
