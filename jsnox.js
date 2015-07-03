@@ -106,13 +106,13 @@ function jsnox(React) {
         }
 
         // Handle case where props arg is not specified (it's optional)
-        if (Array.isArray(props) || typeof props === 'string') {
+        if (Array.isArray(props) || typeof props !== 'object') {
             children = props
             props = null
         }
 
         if (typeof componentType === 'function') {
-            // For custom componenents, attempt to provide a default "key" prop.
+            // For custom components, attempt to provide a default "key" prop.
             // This can prevent the "Each child in an array should have a
             // unique key prop" warning when the element doesn't have any
             // siblings of the same type. Provide a displayName for your custom
