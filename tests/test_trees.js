@@ -36,6 +36,14 @@ test('rendering custom components and text nodes', function(t) {
     t.end()
 });
 
+test('last arg can be number, will be treated as a string', function(t) {
+    t.equal(render(d('div', {}, 15)), '<div>15</div>')
+    t.equal(render(d('div', 15)), '<div>15</div>')
+    t.equal(render(d('div', -3)), '<div>-3</div>')
+    t.equal(render(d('div', 4.89)), '<div>4.89</div>')
+    t.end()
+});
+
 test('rendering custom components works correctly without props', function(t) {
     var tree = d('section#stuff', [
                 d(Greeting),
