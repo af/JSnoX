@@ -49,7 +49,7 @@ function parseTagSpec(specString) {
     // Provide the specString as a default key, which can always be overridden
     // by the props hash (for when two siblings have the same specString)
     var tagName = tagMatch[1]
-    keyCount[specString] = keyCount[specString] ? keyCount[specString] + 1 : 1;
+    keyCount[specString] = keyCount[specString] ? keyCount[specString] + 1 : 1
     var uniqueKey = specString + keyCount[specString]
     var props = { key: uniqueKey }
     var classes = []
