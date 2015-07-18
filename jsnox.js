@@ -20,6 +20,13 @@ ParseError.prototype.name = 'JSnoXParseError'
 // from this cache for an increase in performance.
 var specCache = {}
 
+//An object to hold the count of how many times each key is used
+//so far in order to append the count to the key and therefore
+//make each key unique. This avoids any 
+// flattenchildren encountered two children with the same key react
+//type of errors
+var keyCount = {}
+
 // Convert a tag specification string into an object
 // eg. 'input:checkbox#foo.bar[name=asdf]' produces the output:
 // {
@@ -42,7 +49,9 @@ function parseTagSpec(specString) {
     // Provide the specString as a default key, which can always be overridden
     // by the props hash (for when two siblings have the same specString)
     var tagName = tagMatch[1]
-    var props = { key: specString }
+    keyCount[specString] = keyCount[specString] ? keyCount[specString] + 1 : 1;
+    var uniqueKey = specString + keyCount[specString]
+    var props = { key: uniqueKey }
     var classes = []
     if (tagMatch[2]) props.type = tagMatch[2]
     else if (tagName === 'button') props.type = 'button' // Saner default for <button>
@@ -118,6 +127,8 @@ function jsnox(React) {
             // siblings of the same type. Provide a displayName for your custom
             // components to make this more useful (and help with debugging).
             var fakeKey = componentType.displayName || 'customElement'
+            keyCount[fakeKey] = keyCount[fakeKey] ? keyCount[fakeKey] + 1 : 1
+            fakeKey = fakeKey + keyCount[fakeKey]
             props = props || {}
             if (!props.key) props.key = fakeKey
         } else {
