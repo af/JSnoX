@@ -4,7 +4,7 @@
 var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/    // matches 'input' or 'input:text'
 var propsRegex = /((?:#|\.|@)[\w-]+)|(\[.*?\])/g    // matches all further properties
 var attrRegex = /\[([\w-]+)(?:=([^\]]+))?\]/        // matches '[foo=bar]' or '[foo]'
-
+var autoKeyGenRegex = /\^$/                         // matches 'anything^' 
 
 // Error subclass to throw for parsing errors
 function ParseError(input) {
@@ -31,19 +31,19 @@ var specCache = {}
 //     name: 'asdf'
 //   }
 // }
-function parseTagSpec(specString) {
+function parseTagSpec(specString, autoKeyGen) {
     if (!specString || !specString.match) throw new ParseError(specString)
     if (specCache[specString]) return specCache[specString]
 
     // Parse tagName, and optional type attribute
     var tagMatch = specString.match(tagNameRegex)
     if (!tagMatch) throw new ParseError(specString)
-
-    // Provide the specString as a default key, which can always be overridden
-    // by the props hash (for when two siblings have the same specString)
     var tagName = tagMatch[1]
-    var props = { key: specString }
+    var props = {}
     var classes = []
+    if (autoKeyGen || specString.match(autoKeyGenRegex)) {
+        props.key = specString
+    }
     if (tagMatch[2]) props.type = tagMatch[2]
     else if (tagName === 'button') props.type = 'button' // Saner default for <button>
 
@@ -111,20 +111,11 @@ function jsnox(React) {
             props = null
         }
 
-        if (typeof componentType === 'function') {
-            // For custom components, attempt to provide a default "key" prop.
-            // This can prevent the "Each child in an array should have a
-            // unique key prop" warning when the element doesn't have any
-            // siblings of the same type. Provide a displayName for your custom
-            // components to make this more useful (and help with debugging).
-            var fakeKey = componentType.displayName || 'customElement'
-            props = props || {}
-            if (!props.key) props.key = fakeKey
-        } else {
+        if (typeof componentType !== 'function') {
             // Parse the provided string into a hash of props
             // If componentType is invalid (undefined, empty string, etc),
             // parseTagSpec should throw.
-            var spec = parseTagSpec(componentType)
+            var spec = parseTagSpec(componentType, autoKeyGen)
             componentType = spec.tagName
             props = extend(spec.props, props)
         }
