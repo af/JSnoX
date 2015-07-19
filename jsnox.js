@@ -38,7 +38,7 @@ function parseTagSpec(specString) {
     // Parse tagName, and optional type attribute
     var tagMatch = specString.match(tagNameRegex)
     if (!tagMatch) throw new ParseError(specString)
-
+    var tagName = tagMatch[1]
     var props = {}
     var classes = []
     if (tagMatch[2]) props.type = tagMatch[2]
