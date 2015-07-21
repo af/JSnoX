@@ -130,3 +130,4 @@ module that converts [hyperscript](https://github.com/dominictarr/hyperscript)
 to ReactElements.
 * [react-no-jsx](https://github.com/jussi-kalliokoski/react-no-jsx) provides
   another way to write plain JS instead of JSX.
+* [r-dom](https://github.com/uber/r-dom) is a similar wrapper for `React.DOM`
