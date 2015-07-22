@@ -110,10 +110,12 @@ function jsnox(React, autoKeyGen) {
             props = null
         }
 
-        if (typeof componentType === 'function' && autoKeyGen) {
-            var fakeKey = componentType.displayName || 'customElement'
-            props = props || {}
-            if (!props.key) props.key = fakeKey
+        if (typeof componentType === 'function') {
+            if (autoKeyGen) {
+                var fakeKey = componentType.displayName || 'customElement'
+                props = props || {}
+                if (!props.key) props.key = fakeKey
+            }
         } else {
             // Parse the provided string into a hash of props
             // If componentType is invalid (undefined, empty string, etc),
