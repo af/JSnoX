@@ -5,7 +5,6 @@ var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/    // matches 'input' or 'input
 var propsRegex = /((?:#|\.|@)[\w-]+)|(\[.*?\])/g    // matches all further properties
 var attrRegex = /\[([\w-]+)(?:=([^\]]+))?\]/        // matches '[foo=bar]' or '[foo]'
 
-
 // Error subclass to throw for parsing errors
 function ParseError(input) {
     this.message = input
@@ -31,7 +30,7 @@ var specCache = {}
 //     name: 'asdf'
 //   }
 // }
-function parseTagSpec(specString) {
+function parseTagSpec(specString, autoKeyGen) {
     if (!specString || !specString.match) throw new ParseError(specString)
     if (specCache[specString]) return specCache[specString]
 
@@ -41,6 +40,9 @@ function parseTagSpec(specString) {
     var tagName = tagMatch[1]
     var props = {}
     var classes = []
+    if (autoKeyGen) {
+        props.key = specString
+    }
     if (tagMatch[2]) props.type = tagMatch[2]
     else if (tagName === 'button') props.type = 'button' // Saner default for <button>
 
@@ -93,7 +95,7 @@ function extend(obj1, obj2) {
 // Main exported function.
 // Returns a "client", which is a function that can be used to compose
 // ReactElement trees directly.
-function jsnox(React) {
+function jsnox(React, autoKeyGen) {
     var client = function(componentType, props, children) {
         // Throw an error if too many arguments were passed in
         // (this can happen if you forget to wrap children in an array literal):
@@ -108,11 +110,15 @@ function jsnox(React) {
             props = null
         }
 
-        if (typeof componentType !== 'function') {
+        if (typeof componentType === 'function' && autoKeyGen) {
+            var fakeKey = componentType.displayName || 'customElement'
+            props = props || {}
+            if (!props.key) props.key = fakeKey
+        } else {
             // Parse the provided string into a hash of props
             // If componentType is invalid (undefined, empty string, etc),
             // parseTagSpec should throw.
-            var spec = parseTagSpec(componentType)
+            var spec = parseTagSpec(componentType, autoKeyGen)
             componentType = spec.tagName
             props = extend(spec.props, props)
         }
