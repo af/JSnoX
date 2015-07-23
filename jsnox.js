@@ -4,6 +4,7 @@
 var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/    // matches 'input' or 'input:text'
 var propsRegex = /((?:#|\.|@)[\w-]+)|(\[.*?\])/g    // matches all further properties
 var attrRegex = /\[([\w-]+)(?:=([^\]]+))?\]/        // matches '[foo=bar]' or '[foo]'
+var autoKeyGenRegex = /\^$/                         // matches 'anything^' 
 
 // Error subclass to throw for parsing errors
 function ParseError(input) {
@@ -40,7 +41,7 @@ function parseTagSpec(specString, autoKeyGen) {
     var tagName = tagMatch[1]
     var props = {}
     var classes = []
-    if (autoKeyGen) {
+    if (autoKeyGen || specString.match(autoKeyGenRegex)) {
         props.key = specString
     }
     if (tagMatch[2]) props.type = tagMatch[2]
@@ -110,13 +111,7 @@ function jsnox(React, autoKeyGen) {
             props = null
         }
 
-        if (typeof componentType === 'function') {
-            if (autoKeyGen) {
-                var fakeKey = componentType.displayName || 'customElement'
-                props = props || {}
-                if (!props.key) props.key = fakeKey
-            }
-        } else {
+        if (typeof componentType !== 'function') {
             // Parse the provided string into a hash of props
             // If componentType is invalid (undefined, empty string, etc),
             // parseTagSpec should throw.
