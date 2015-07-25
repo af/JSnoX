@@ -31,7 +31,7 @@ var specCache = {}
 //     name: 'asdf'
 //   }
 // }
-function parseTagSpec(specString, autoKeyGen) {
+function parseTagSpec(specString) {
     if (!specString || !specString.match) throw new ParseError(specString)
     if (specCache[specString]) return specCache[specString]
 
@@ -41,9 +41,8 @@ function parseTagSpec(specString, autoKeyGen) {
     var tagName = tagMatch[1]
     var props = {}
     var classes = []
-    if (autoKeyGen || specString.match(autoKeyGenRegex)) {
-        props.key = specString
-    }
+
+    if (specString.match(autoKeyGenRegex)) props.key = specString
     if (tagMatch[2]) props.type = tagMatch[2]
     else if (tagName === 'button') props.type = 'button' // Saner default for <button>
 
@@ -115,7 +114,7 @@ function jsnox(React) {
             // Parse the provided string into a hash of props
             // If componentType is invalid (undefined, empty string, etc),
             // parseTagSpec should throw.
-            var spec = parseTagSpec(componentType, autoKeyGen)
+            var spec = parseTagSpec(componentType)
             componentType = spec.tagName
             props = extend(spec.props, props)
         }
