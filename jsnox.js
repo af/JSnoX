@@ -48,7 +48,7 @@ function parseTagSpec(specString) {
     else if (tagName === 'button') props.type = 'button' // Saner default for <button>
 
     var matches = specString.match(propsRegex)
-    matches && matches.forEach(function(str) {
+    matches && matches.forEach(function getRegexMatches(str) {
         if (!str) return
         else if (str[0] === '#') props.id = str.slice(1)
         else if (str[0] === '@') props.ref = str.slice(1)
@@ -97,7 +97,7 @@ function extend(obj1, obj2) {
 // Returns a "client", which is a function that can be used to compose
 // ReactElement trees directly.
 function jsnox(React) {
-    var client = function(componentType, props, children) {
+    var client = function jsnoxClient(componentType, props, children) {
         // Throw an error if too many arguments were passed in
         // (this can happen if you forget to wrap children in an array literal):
         if (arguments.length > 3) {
