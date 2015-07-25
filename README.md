@@ -55,20 +55,38 @@ CSS selectors:
 
 ![spec strings](docs/jsnox-specstring.png)
 
-Also, you can add '@foo' to a specString to point
+Each property referenced in the string is passed along in the props argument to
+`React.createElement()`. You can pass along additional props in the second argument
+(a JavaScript object). jsnox will merge the className attribute from both arguments
+automatically, useful if the element has a mix of static and dynamic classes.
+
+Also:
+
+* append a `^` to your specString to have a `key` prop automatically generated
+from the spec string. This can help when you have [dynamic
+children](https://facebook.github.io/react/docs/multiple-components.html#dynamic-children)
+where they all have unique specStrings, eg:
+
+```js
+render() {
+    return d('ul',
+        // The ^ suffix below will give each <li> a unique key:
+        categories.map(cat => d(`li.category.${cat.id}^`, cat.title))
+    )
+}
+```
+
+* you can add '@foo' to a specString to point
 a [ref](http://facebook.github.io/react/docs/more-about-refs.html) named foo
 to that element:
 
-```
+```js
   // in render():
   return d('input:email@emailAddr')
 
   // elsewhere in the component (after rendering):
   var emailEl = this.refs.emailAddr.getDOMNode()
 ```
-
-Each property referenced in the string is passed along in the props argument to
-`React.createElement()`. You can pass along additional props in the second argument.
 
 
 ## Install
