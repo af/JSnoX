@@ -104,25 +104,34 @@ function jsnox(React) {
             props = null
         }
 
+        // Handle case where props object (second arg) is omitted
+        var arg2IsReactElement = (props && typeof props === 'object' &&
+                                  typeof props._context === 'object')
+
+        var finalProps = props
         if (typeof componentType !== 'function') {
             // Parse the provided string into a hash of props
             // If componentType is invalid (undefined, empty string, etc),
             // parseTagSpec should throw.
             var spec = parseTagSpec(componentType)
             componentType = spec.tagName
-            props = extend(spec.props, props)
+            finalProps = arg2IsReactElement ? spec.props : extend(spec.props, props)
         }
 
         // If more than three args are given, assume args 3..n are ReactElement
         // children. You can also pass an array of children as the 3rd argument,
         // but in that case each child should have a unique key to avoid warnings.
-        if (arguments.length > 3) {
-            var args = protoSlice.call(arguments)
+        var args = protoSlice.call(arguments)
+        if (args.length > 3 || arg2IsReactElement) {
             args[0] = componentType
-            args[1] = props
+            if (arg2IsReactElement) {
+                args.splice(1, 0, finalProps || null)
+            } else {
+                args[1] = finalProps
+            }
             return React.createElement.apply(React, args)
         } else {
-            return React.createElement(componentType, props, children)
+            return React.createElement(componentType, finalProps, children)
         }
     }
     client.ParseError = ParseError

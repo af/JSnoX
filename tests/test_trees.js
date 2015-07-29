@@ -15,10 +15,10 @@ var Greeting = React.createClass({
 
 
 test('trees of elements render correctly', function(t) {
-    var tree = d('form.foo', null,
+    var tree = d('form.foo',
                   d('input:email'),
                   d('input:password'),
-                  d('button:submit', null, 'Submit')
+                  d('button:submit', 'Submit')
                )
     t.equal(render(tree), '<form class="foo"><input type="email">' +
                           '<input type="password"><button type="submit">Submit</button>' +
@@ -27,7 +27,7 @@ test('trees of elements render correctly', function(t) {
 })
 
 test('rendering custom components and text nodes', function(t) {
-    var tree = d('section#stuff', null,
+    var tree = d('section#stuff',
                 d('span', 'a greeting:'),
                 d(Greeting, { text: 'yo' }),
                 d('span', '!')
@@ -51,8 +51,32 @@ test('last arg can be number, will be treated as a string', function(t) {
     t.end()
 })
 
+test('second arg can be null', function(t) {
+    var twoArgTree = d('div', null, d('span', 'hi'))
+    t.equal(render(twoArgTree), '<div><span>hi</span></div>')
+
+    var threeArgTree = d('div', null, d('span', 'hi'), d('span', 'yo'))
+    t.equal(render(threeArgTree), '<div><span>hi</span><span>yo</span></div>')
+
+    var fourArgTree = d('div', null, d('span', 'hi'), d('span', 'yo'), d('span', 'hey'))
+    t.equal(render(fourArgTree), '<div><span>hi</span><span>yo</span><span>hey</span></div>')
+    t.end()
+})
+
+test('second arg can be a ReactElement (no null or {} arg required)', function(t) {
+    var twoArgTree = d('div', d('span', 'hi'))
+    t.equal(render(twoArgTree), '<div><span>hi</span></div>')
+
+    var threeArgTree = d('div', d('span', 'hi'), d('span', 'yo'))
+    t.equal(render(threeArgTree), '<div><span>hi</span><span>yo</span></div>')
+
+    var fourArgTree = d('div', d('span', 'hi'), d('span', 'yo'), d('span', 'hey'))
+    t.equal(render(fourArgTree), '<div><span>hi</span><span>yo</span><span>hey</span></div>')
+    t.end()
+})
+
 test('rendering custom components works correctly without props', function(t) {
-    var tree = d('section#stuff', null,
+    var tree = d('section#stuff',
                 d(Greeting),
                 d('span', '!')
                )
