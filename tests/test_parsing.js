@@ -63,7 +63,7 @@ test('Attributes with hyphens are passed through', function(t) {
     var expected = '<div data-bar="asdf" class="foo">hi</div>'
     t.equal(render(d('div.foo[data-bar=asdf]', 'hi')), expected)
     t.end()
-});
+})
 
 test('Parses combinations of properties', function(t) {
     t.equal(render(d('div#foo.bar.baz')), '<div id="foo" class="bar baz"></div>')
@@ -89,13 +89,13 @@ test('Props hash argument is optional', function(t) {
     t.equal(render(d('div.foo', 'Shazam')), '<div class="foo">Shazam</div>')
     t.equal(render(d('div', [d('span^', 'hi')])), '<div><span>hi</span></div>')
     t.end()
-});
+})
 
 test('button elements have default type="button"', function(t) {
     t.equal(render(d('button', 'hi')), '<button type="button">hi</button>')
     t.equal(render(d('button.foo.bar', 'hi')), '<button type="button" class="foo bar">hi</button>')
     t.end()
-});
+})
 
 test('Data attributes get passed through as expected', function(t) {
     t.equal(render(d('div', {'data-foo': 'bar'}, 'hi')), '<div data-foo="bar">hi</div>')
@@ -106,7 +106,7 @@ test('Data attributes get passed through as expected', function(t) {
     t.equal(render(d('div[data-foo=bar]', 'hi')), '<div data-foo="bar">hi</div>')
     t.equal(render(d('div[data-a=1][data-b=2]', 'hi')), '<div data-a="1" data-b="2">hi</div>')
     t.end()
-});
+})
 
 test('invalid input throws ParseError exceptions', function(t) {
     var errRegex = new RegExp(d.ParseError.prototype.name)
@@ -117,4 +117,4 @@ test('invalid input throws ParseError exceptions', function(t) {
     t.throws(function() { d(false) }, errRegex)
     t.throws(function() { d(14) }, errRegex)
     t.end()
-});
+})
