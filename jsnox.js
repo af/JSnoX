@@ -5,6 +5,7 @@ var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/    // matches 'input' or 'input
 var propsRegex = /((?:#|\.|@)[\w-]+)|(\[.*?\])/g    // matches all further properties
 var attrRegex = /\[([\w-]+)(?:=([^\]]+))?\]/        // matches '[foo=bar]' or '[foo]'
 var autoKeyGenRegex = /\^$/                         // matches 'anything^' 
+var protoSlice = Array.prototype.slice
 
 // Error subclass to throw for parsing errors
 function ParseError(input) {
@@ -97,14 +98,7 @@ function extend(obj1, obj2) {
 // ReactElement trees directly.
 function jsnox(React) {
     var client = function jsnoxClient(componentType, props, children) {
-        // Throw an error if too many arguments were passed in
-        // (this can happen if you forget to wrap children in an array literal):
-        if (arguments.length > 3) {
-            var args = [].slice.call(arguments)
-            throw new ParseError('Too many jsnox args (expected 3 max). Got: ' + args)
-        }
-
-        // Handle case where props arg is not specified (it's optional)
+        // Handle case where an array of children is given as the second argument:
         if (Array.isArray(props) || typeof props !== 'object') {
             children = props
             props = null
@@ -119,7 +113,17 @@ function jsnox(React) {
             props = extend(spec.props, props)
         }
 
-        return React.createElement(componentType, props, children)
+        // If more than three args are given, assume args 3..n are ReactElement
+        // children. You can also pass an array of children as the 3rd argument,
+        // but in that case each child should have a unique key to avoid warnings.
+        if (arguments.length > 3) {
+            var args = protoSlice.call(arguments)
+            args[0] = componentType
+            args[1] = props
+            return React.createElement.apply(React, args)
+        } else {
+            return React.createElement(componentType, props, children)
+        }
     }
     client.ParseError = ParseError
     return client

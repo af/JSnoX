@@ -22,13 +22,13 @@ var LoginForm = React.createClass({
     submitLogin: function() { ... },
 
     render: function() {
-        return d('form[method=POST]', { onSubmit: this.submitLogin }, [
+        return d('form[method=POST]', { onSubmit: this.submitLogin },
             d('h1.form-header', 'Login'),
             d('input:email[name=email]', { placeholder: 'Email' }),
             d('input:password[name=pass]', { placeholder: 'Password' }),
             d(MyOtherComponent, { myProp: 'foo' }),
             d('button:submit', 'Login')
-        ])
+        )
     }
 })
 ```
@@ -36,7 +36,7 @@ var LoginForm = React.createClass({
 
 ## API
 
-```javascript
+```js
 // Create a function, d, that parses spec strings into React DOM:
 var React = require('react')
 var d = require('jsnox')(React)

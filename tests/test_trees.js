@@ -15,11 +15,11 @@ var Greeting = React.createClass({
 
 
 test('trees of elements render correctly', function(t) {
-    var tree = d('form.foo', {}, [
+    var tree = d('form.foo', null,
                   d('input:email'),
                   d('input:password'),
-                  d('button:submit', {}, 'Submit')
-               ])
+                  d('button:submit', null, 'Submit')
+               )
     t.equal(render(tree), '<form class="foo"><input type="email">' +
                           '<input type="password"><button type="submit">Submit</button>' +
                           '</form>')
@@ -27,17 +27,24 @@ test('trees of elements render correctly', function(t) {
 });
 
 test('rendering custom components and text nodes', function(t) {
-    var tree = d('section#stuff', [
-                'a greeting:',
-                d(Greeting, { text: 'yo'}),
+    var tree = d('section#stuff', null,
+                d('span', 'a greeting:'),
+                d(Greeting, { text: 'yo' }),
                 d('span', '!')
-               ])
-    t.equal(render(tree), '<section id="stuff">a greeting:<div>yo</div><span>!</span></section>')
+               )
+    t.equal(render(tree), '<section id="stuff"><span>a greeting:</span><div>yo</div><span>!</span></section>')
+    t.end()
+});
+
+test('second arg can be an array of ReactElements', function(t) {
+    var items = ['one', 'two']
+    var tree = d('ul', items.map(function(item) { return d('li.' + item + '^') }))
+    t.equal(render(tree), '<ul><li class="one"></li><li class="two"></li></ul>')
     t.end()
 });
 
 test('last arg can be number, will be treated as a string', function(t) {
-    t.equal(render(d('div', {}, 15)), '<div>15</div>')
+    t.equal(render(d('div', null, 15)), '<div>15</div>')
     t.equal(render(d('div', 15)), '<div>15</div>')
     t.equal(render(d('div', -3)), '<div>-3</div>')
     t.equal(render(d('div', 4.89)), '<div>4.89</div>')
@@ -45,32 +52,23 @@ test('last arg can be number, will be treated as a string', function(t) {
 });
 
 test('rendering custom components works correctly without props', function(t) {
-    var tree = d('section#stuff', [
+    var tree = d('section#stuff', null,
                 d(Greeting),
                 d('span', '!')
-               ])
-    t.equal(render(tree), '<section id="stuff"><div>hi</div><span>!</span></section>')
-    t.end()
-});
-
-test('rendering custom components works correctly without props', function(t) {
-    var tree = d('section#stuff', [
-                d(Greeting),
-                d('span', '!')
-               ])
+               )
     t.equal(render(tree), '<section id="stuff"><div>hi</div><span>!</span></section>')
     t.end()
 });
 
 test('Readme example', function(t) {
     var noop = function() {}
-    var tree = d('form[method=POST]', { onSubmit: noop }, [
+    var tree = d('form[method=POST]', { onSubmit: noop },
         d('h1.form-header', 'Login'),
         d('input:email[name=email]', { placeholder: 'Email' }),
         d('input:password[name=pass]', { placeholder: 'Password' }),
         d(Greeting, { text: 'yo' }),
         d('button:submit', 'Login')
-    ])
+    )
 
     var expected = '<form method="POST"><h1 class="form-header">Login</h1><input type="email" name="email" placeholder="Email"><input type="password" name="pass" placeholder="Password"><div>yo</div><button type="submit">Login</button></form>';
     t.equal(render(tree), expected)

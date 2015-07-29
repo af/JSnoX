@@ -87,7 +87,7 @@ test('Combines parsed props and values from the props hash', function(t) {
 
 test('Props hash argument is optional', function(t) {
     t.equal(render(d('div.foo', 'Shazam')), '<div class="foo">Shazam</div>')
-    t.equal(render(d('div', [d('span', 'hi')])), '<div><span>hi</span></div>')
+    t.equal(render(d('div', [d('span^', 'hi')])), '<div><span>hi</span></div>')
     t.end()
 });
 
@@ -116,6 +116,5 @@ test('invalid input throws ParseError exceptions', function(t) {
     t.throws(function() { d(null) }, errRegex)
     t.throws(function() { d(false) }, errRegex)
     t.throws(function() { d(14) }, errRegex)
-    t.throws(function() { d('div.too-many-args', 'asdf', 'asdf', 'asdf') }, /Too many jsnox args/)
     t.end()
 });
