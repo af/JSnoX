@@ -2,8 +2,8 @@
 
 # JSnoX
 
-Enjoy [React.js](http://facebook.github.io/react/), but not a fan of the JSX? JSnoX gives you a concise,
-expressive way to build ReactElement trees in pure JavaScript. 
+Enjoy [React.js](http://facebook.github.io/react/), but not a fan of the JSX?
+JSnoX gives you a concise, expressive way to build ReactElement trees in pure JavaScript.
 
 
 ## Works with
@@ -24,8 +24,8 @@ var LoginForm = React.createClass({
     render: function() {
         return d('form[method=POST]', { onSubmit: this.submitLogin },
             d('h1.form-header', 'Login'),
-            d('input:email[name=email]', { placeholder: 'Email' }),
-            d('input:password[name=pass]', { placeholder: 'Password' }),
+            d('input:email[name=email]'),
+            d('input:password[name=pass]'),
             d(MyOtherComponent, { myProp: 'foo' }),
             d('button:submit', 'Login')
         )
@@ -95,7 +95,7 @@ to that element:
 npm install jsnox
 ```
 
-Npm is the recommended way to install. You can also include `index.js` in your
+Npm is the recommended way to install. You can also include `jsnox.js` in your
 project directly and it will fall back to exporting a global variable as
 `window.jsnox`.
 
@@ -110,9 +110,7 @@ project directly and it will fall back to exporting a global variable as
 
 ## Why this instead of plain JS with `React.DOM`?
 
-* More concise code
-* No need to specify a `key` property for siblings that are specified with
-  distinct strings
+* More concise code; specify classes/ids/attributes in a way similar to CSS selectors
 * Use your custom ReactComponent instances on React 0.12+ without [needing
   to wrap them](https://gist.github.com/sebmarkbage/d7bce729f38730399d28)
   with `React.createFactory()` everywhere
