@@ -118,3 +118,19 @@ test('invalid input throws ParseError exceptions', function(t) {
     t.throws(function() { d(14) }, errRegex)
     t.end()
 })
+
+test('$renderIf', function(t) {
+    var conditionalTree = function(cond) {
+        return d('div', d('div', { $renderIf: cond }, 'inside'))
+    };
+
+    t.equal(render(conditionalTree(false)), '<div></div>')
+    t.equal(render(conditionalTree(true)), '<div><div>inside</div></div>')
+    t.equal(render(conditionalTree(null)), '<div></div>')
+    t.equal(render(conditionalTree(12)), '<div><div>inside</div></div>')
+    t.equal(render(conditionalTree({})), '<div><div>inside</div></div>')
+
+    // If $renderIf is undefined, the element in question should be rendered:
+    t.equal(render(conditionalTree()), '<div><div>inside</div></div>')
+    t.end()
+})
