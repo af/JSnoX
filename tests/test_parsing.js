@@ -134,3 +134,12 @@ test('$renderIf', function(t) {
     t.equal(render(conditionalTree()), '<div><div>inside</div></div>')
     t.end()
 })
+
+test('$renderIf value does not pass through to components', function(t) {
+    var PassThrough = React.createClass({
+        render: function() { return d('div', this.props.$renderIf) }
+    })
+    t.equal(render(d('div', d(PassThrough, { $renderIf: 1 }))), '<div><div></div></div>')
+    t.equal(render(d('div', d(PassThrough, { $renderIf: 0 }))), '<div></div>')
+    t.end()
+})
