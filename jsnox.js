@@ -115,7 +115,7 @@ function jsnox(React) {
                                   typeof props._context === 'object')
 
         var finalProps = props
-        if (typeof componentType !== 'function') {
+        if (typeof componentType === 'string' || !componentType) {
             // Parse the provided string into a hash of props
             // If componentType is invalid (undefined, empty string, etc),
             // parseTagSpec should throw.
