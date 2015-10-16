@@ -39,6 +39,7 @@ var LoginForm = React.createClass({
 ```js
 // Create a function, d, that parses spec strings into React DOM:
 var React = require('react')
+var ReactDOM = require('react-dom')
 var d = require('jsnox')(React)
 
 // The function returned by JSnoX takes 3 arguments:
@@ -47,7 +48,7 @@ var d = require('jsnox')(React)
 // children (optional)      - String, or an array of ReactElements
 var myDom = d('div.foo', {}, 'hello')
 
-console.log(React.renderToStaticMarkup(myDom))  // => '<div class="foo">hello</div>'
+ReactDOM.render(myDom, myElement)  // renders <div class="foo">hello</div>
 ```
 
 JSnoX's specStrings let you specify your components' HTML in a way resembling
@@ -86,7 +87,7 @@ to that element:
   return d('input:email@emailAddr')
 
   // elsewhere in the component (after rendering):
-  var emailEl = this.refs.emailAddr.getDOMNode()
+  var email = this.refs.emailAddr.value
 ```
 
 * You can pass a special `$renderIf` prop to your components or DOM elements.
