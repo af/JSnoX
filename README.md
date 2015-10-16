@@ -60,7 +60,8 @@ Each property referenced in the string is passed along in the props argument to
 (a JavaScript object). jsnox will merge the className attribute from both arguments
 automatically, useful if the element has a mix of static and dynamic classes.
 
-Also:
+
+## Bonus features
 
 * append a `^` to your specString to have a `key` prop automatically generated
 from the spec string. This can help when you have [dynamic
@@ -86,6 +87,14 @@ to that element:
 
   // elsewhere in the component (after rendering):
   var emailEl = this.refs.emailAddr.getDOMNode()
+```
+
+* You can pass a special `$renderIf` prop to your components or DOM elements.
+  If it evaluates to false, the element won't be rendered:
+
+```js
+  // in render():
+  return d('div.debugOutput', { $renderIf: DEV_MODE }, 'hi')
 ```
 
 
