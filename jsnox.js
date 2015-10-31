@@ -38,7 +38,10 @@ function parseTagSpec(specString) {
 
     // Parse tagName, and optional type attribute
     var tagMatch = specString.match(tagNameRegex)
-    if (!tagMatch) throw new ParseError(specString)
+    if (!tagMatch) {
+        if (specString.match(propsRegex)) tagMatch = ['div', 'div'] // create <div> if tagname omitted
+        else throw new ParseError(specString)
+    }
     var tagName = tagMatch[1]
     var props = {}
     var classes = []

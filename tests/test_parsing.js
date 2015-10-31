@@ -12,6 +12,13 @@ test('Parses simple plain tagnames', function(t) {
     t.end()
 })
 
+test('Uses <div> by default if no tagname given', function(t) {
+    t.equal(render(d('.foo')), '<div class="foo"></div>')
+    t.equal(render(d('.foo.bar.baz')), '<div class="foo bar baz"></div>')
+    t.equal(render(d('#foo')), '<div id="foo"></div>')
+    t.end()
+})
+
 test('Parses ids', function(t) {
     t.equal(render(d('div#test')), '<div id="test"></div>')
     t.end()
