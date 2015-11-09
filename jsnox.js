@@ -4,7 +4,7 @@
 var tagNameRegex = /^([a-z1-6]+)(?:\:([a-z]+))?/    // matches 'input' or 'input:text'
 var propsRegex = /((?:#|\.|@)[\w-]+)|(\[.*?\])/g    // matches all further properties
 var attrRegex = /\[([\w-]+)(?:=([^\]]+))?\]/        // matches '[foo=bar]' or '[foo]'
-var autoKeyGenRegex = /\^$/                         // matches 'anything^' 
+var autoKeyGenRegex = /\^$/                         // matches 'anything^'
 var protoSlice = Array.prototype.slice
 
 // Error subclass to throw for parsing errors
@@ -149,7 +149,9 @@ function jsnox(React) {
 }
 
 // Export for CommonJS, or else add a global jsnox variable:
+/* global define */
 if (typeof(module) !== 'undefined') module.exports = jsnox
+else if (typeof define === 'function' && define.amd) define([], function(){return jsnox;})
 else global.jsnox = jsnox
 
 }(this))
