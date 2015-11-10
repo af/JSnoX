@@ -149,9 +149,9 @@ function jsnox(React) {
 }
 
 // Export for CommonJS, or else add a global jsnox variable:
-/* global define */
 if (typeof(module) !== 'undefined') module.exports = jsnox
-else if (typeof define === 'function' && define.amd) define([], function(){return jsnox;})
-else global.jsnox = jsnox
+else if (typeof global.define === 'function' && global.define.amd) {
+    global.define([], function() { return jsnox })      // AMD Support
+} else global.jsnox = jsnox
 
 }(this))
