@@ -102,7 +102,8 @@ function extend(obj1, obj2) {
 function jsnox(React) {
     var client = function jsnoxClient(componentType, props, children) {
         // Special $renderIf prop allows you to conditionally render an element:
-        if (props && typeof props.$renderIf !== 'undefined') {
+        //if (props && typeof props.$renderIf !== 'undefined') {
+        if (props && typeof props === 'object' && props.hasOwnProperty('$renderIf')) {
             if (props.$renderIf) delete props.$renderIf     // Don't pass down to components
             else return null
         }

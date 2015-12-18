@@ -136,9 +136,7 @@ test('$renderIf', function(t) {
     t.equal(render(conditionalTree(null)), '<div></div>')
     t.equal(render(conditionalTree(12)), '<div><div>inside</div></div>')
     t.equal(render(conditionalTree({})), '<div><div>inside</div></div>')
-
-    // If $renderIf is undefined, the element in question should be rendered:
-    t.equal(render(conditionalTree()), '<div><div>inside</div></div>')
+    t.equal(render(conditionalTree()), '<div></div>')   // undefined should be treated as falsy
     t.end()
 })
 
