@@ -25,7 +25,8 @@
   "devDependencies": {
     "ghooks": "^0.3.0",
     "jshint": "2.7.0",
-    "react": "0.12.1",
+    "react": "15.0.1",
+    "react-dom": "15.0.1",
     "tape": "^3.0.3"
   },
   "config": {

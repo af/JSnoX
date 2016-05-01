@@ -1,14 +1,15 @@
 var test = require('tape')
 var React = require('react')
+var ReactDOM = require('react-dom/server')
 var d = require('..')(React)
 
 var render = function(domTree) {
-    return React.renderToStaticMarkup(domTree)
+    return ReactDOM.renderToStaticMarkup(domTree)
 }
 
 test('Parses simple plain tagnames', function(t) {
     t.equal(render(d('div')), '<div></div>')
-    t.equal(render(d('input')), '<input>')
+    t.equal(render(d('input')), '<input/>')
     t.end()
 })
 
@@ -35,8 +36,8 @@ test('Parses classes', function(t) {
 test('Parses attributes (with or without a given value)', function(t) {
     // Note: React warns about [checked] and [value] unless one of readOnly or
     // onChange are also specified
-    t.equal(render(d('input[name=asdf]')), '<input name="asdf">')
-    t.equal(render(d('select[multiple]')), '<select multiple></select>')
+    t.equal(render(d('input[name=asdf]')), '<input name="asdf"/>')
+    t.equal(render(d('select[multiple]')), '<select multiple=""></select>')
 
     // Can include various url characters as attribute values
     t.equal(render(d('a[href=google.com?foo=bar]')), '<a href="google.com?foo=bar"></a>')
@@ -48,20 +49,20 @@ test('Parses attributes (with or without a given value)', function(t) {
     t.equal(render(d('a[href=' + testUrl + ']')), '<a href="' + encodedUrl + '"></a>')
 
     // Some attribute types allow values that include spaces:
-    t.equal(render(d('input[placeholder=s p a c e]')), '<input placeholder="s p a c e">')
+    t.equal(render(d('input[placeholder=s p a c e]')), '<input placeholder="s p a c e"/>')
 
-    t.equal(render(d('input[checked=1][readOnly=1]')), '<input checked readonly>')
-    t.equal(render(d('input[checked][readOnly]')), '<input checked readonly>')
+    t.equal(render(d('input[checked=1]')), '<input checked=""/>')
+    t.equal(render(d('input[checked]')), '<input checked=""/>')
     t.end()
 })
 
 test('Parses type attribute as a special case (using a colon)', function(t) {
-    t.equal(render(d('input:checkbox')), '<input type="checkbox">')
+    t.equal(render(d('input:checkbox')), '<input type="checkbox"/>')
     t.equal(render(d('button:submit')), '<button type="submit"></button>')
 
     // Test combinations with other properties:
     t.equal(render(d('input:checkbox.foo[name=baz]')),
-                     '<input type="checkbox" name="baz" class="foo">')
+                     '<input type="checkbox" name="baz" class="foo"/>')
     t.equal(render(d('button:submit.foo')), '<button type="submit" class="foo"></button>')
     t.end()
 })
@@ -74,7 +75,7 @@ test('Attributes with hyphens are passed through', function(t) {
 
 test('Parses combinations of properties', function(t) {
     t.equal(render(d('div#foo.bar.baz')), '<div id="foo" class="bar baz"></div>')
-    t.equal(render(d('input#foo.bar.baz[readOnly]')), '<input id="foo" readonly class="bar baz">')
+    t.equal(render(d('input#foo.bar.baz[readOnly]')), '<input id="foo" readonly="" class="bar baz"/>')
     t.end()
 })
 

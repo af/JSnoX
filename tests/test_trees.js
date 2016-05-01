@@ -1,9 +1,10 @@
 var test = require('tape')
 var React = require('react')
+var ReactDOM = require('react-dom/server')
 var d = require('..')(React)
 
 var render = function(domTree) {
-    return React.renderToStaticMarkup(domTree)
+    return ReactDOM.renderToStaticMarkup(domTree)
 }
 
 var Greeting = React.createClass({
@@ -20,8 +21,8 @@ test('trees of elements render correctly', function(t) {
                   d('input:password'),
                   d('button:submit', 'Submit')
                )
-    t.equal(render(tree), '<form class="foo"><input type="email">' +
-                          '<input type="password"><button type="submit">Submit</button>' +
+    t.equal(render(tree), '<form class="foo"><input type="email"/>' +
+                          '<input type="password"/><button type="submit">Submit</button>' +
                           '</form>')
     t.end()
 })
@@ -88,13 +89,13 @@ test('Readme example', function(t) {
     var noop = function() {}
     var tree = d('form[method=POST]', { onSubmit: noop },
         d('h1.form-header', 'Login'),
-        d('input:email[name=email]', { placeholder: 'Email' }),
-        d('input:password[name=pass]', { placeholder: 'Password' }),
+        d('input:email[name=email]'),
+        d('input:password[name=pass]'),
         d(Greeting, { text: 'yo' }),
         d('button:submit', 'Login')
     )
 
-    var expected = '<form method="POST"><h1 class="form-header">Login</h1><input type="email" name="email" placeholder="Email"><input type="password" name="pass" placeholder="Password"><div>yo</div><button type="submit">Login</button></form>'
+    var expected = '<form method="POST"><h1 class="form-header">Login</h1><input type="email" name="email"/><input type="password" name="pass"/><div>yo</div><button type="submit">Login</button></form>'
     t.equal(render(tree), expected)
     t.end()
 })
