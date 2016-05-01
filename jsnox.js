@@ -115,9 +115,7 @@ function jsnox(React) {
         }
 
         // Handle case where props object (second arg) is omitted
-        var arg2IsReactElement = (props && typeof props === 'object' &&
-                                  typeof props.ref !== 'undefined' &&
-                                  typeof props.props === 'object')
+        var arg2IsReactElement = props && React.isValidElement(props)
 
         var finalProps = props
         if (typeof componentType === 'string' || !componentType) {
